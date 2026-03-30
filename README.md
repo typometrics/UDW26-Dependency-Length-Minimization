@@ -1,0 +1,71 @@
+# Functional vs. Lexical Dependency Length Minimization Across Universal Dependencies
+
+Code repository for the UDW 2026 paper:
+**"The Grammar Does the Work: Functional vs. Lexical Dependency Length Minimization Across Universal Dependencies"**
+
+## Quick Start
+
+```bash
+pip install -r requirements.txt
+python download_all.py      # Download UD 2.17 + SUD 2.17 treebanks
+python analyze_all.py        # Main analysis (outputs results_all*.csv)
+python plot_all.py           # Generate all figures
+```
+
+## Scripts
+
+| Script | Description |
+|---|---|
+| `download_all.py` | Downloads UD 2.17 (from LINDAT) and SUD 2.17 (from GitHub) treebanks |
+| `analyze_all.py` | Main analysis: computes MDD, random baselines, functional/lexical split for all languages (≥500 sentences). Outputs `results_all.csv`, `results_all_funlex.csv`, `results_all_relations.csv` |
+| `sensitivity_groupings.py` | Sensitivity analysis: recomputes the functional–lexical split under 4 alternative relation groupings (Scenarios A–D) |
+| `flux_covering_analysis.py` | Computes functional arc covering statistics (how often functional arcs span over lexical arcs) |
+| `phylogenetic_analysis.py` | Mixed-effects models controlling for language family |
+| `calculate_stats.py` | Auxiliary statistical tests (Pitman-Morgan variance comparison) |
+| `plot_all.py` | Generates all figures used in the paper |
+
+## Pipeline
+
+```
+download_all.py
+       │
+       ▼
+  data_ud/  data_sud_full/
+       │
+       ▼
+  analyze_all.py
+       │
+       ├── results_all.csv
+       ├── results_all_funlex.csv
+       └── results_all_relations.csv
+              │
+       ┌──────┼──────────────────┐
+       ▼      ▼                  ▼
+  plot_all.py  sensitivity_    phylogenetic_
+               groupings.py   analysis.py
+       │              │              │
+       ▼              ▼              ▼
+   plots/      (stdout)    phylogenetic_results.txt
+```
+
+## Configuration
+
+Key parameters in `analyze_all.py`:
+- `MIN_SENTENCES = 500` — minimum sentences per language (yields 122 languages in UD 2.17)
+- `MAX_SENTENCES_PER_LANG = 15000` — cap for computational efficiency
+- `N_PERMUTATIONS = 20` — random baseline permutations per sentence
+
+## Requirements
+
+- Python 3.9+
+- See `requirements.txt` for dependencies
+
+## Data
+
+Data is not included in this repository. Run `download_all.py` to fetch:
+- **UD 2.17**: ~340 treebanks from [Universal Dependencies](https://universaldependencies.org/)
+- **SUD 2.17**: Corresponding Surface-Syntactic UD treebanks from [SUD](https://surfacesyntacticud.github.io/)
+
+## License
+
+The code is released under the MIT License. The treebank data is subject to the licenses of the individual treebanks (see UD and SUD documentation).

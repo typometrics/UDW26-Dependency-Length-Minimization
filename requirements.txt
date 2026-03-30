@@ -1,0 +1,9 @@
+conllu
+pandas
+matplotlib
+scipy
+seaborn
+requests
+adjustText
+statsmodels
+numpy
